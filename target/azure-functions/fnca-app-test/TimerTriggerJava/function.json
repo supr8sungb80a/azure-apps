@@ -1,0 +1,10 @@
+{
+  "scriptFile" : "../fnca-app-test-1.0-SNAPSHOT.jar",
+  "entryPoint" : "com.func.app.TimerFunctionApp.run",
+  "bindings" : [ {
+    "type" : "timerTrigger",
+    "direction" : "in",
+    "name" : "req",
+    "schedule" : "0 */2 * * * *"
+  } ]
+}
