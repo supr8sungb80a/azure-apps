@@ -57,6 +57,17 @@ jobs:
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_152AFA14F7144156AF2C175EAA2A9793 }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_0BBAD442020148D08924C4FC2A3A605F }}
 
+
+      - name: Apply appSettings.json
+        uses: azure/CLI@v2
+        with:
+          inlineScript: |
+            az functionapp config appsettings set `
+              --name ${{ env.AZURE_FUNCTIONAPP_NAME }} `
+              --resource-group <YOUR_RESOURCE_GROUP> `
+              --settings "@${{ env.ENVIRONMENT }}/appSettings.json"
+      
+
       - name: 'Run Azure Functions Action'
         uses: Azure/functions-action@v1
         id: fa
