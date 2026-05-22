@@ -21,7 +21,7 @@ on:
         options: ['deploy', 'build']
 
 env:
-  ENVIRONMENT: ${{ inputs.ENVIRONMENT }}
+  ENVIRONMENT: ${{ github.event.inputs.ENVIRONMENT || 'optumnonprod' }}
   AZURE_FUNCTIONAPP_NAME: func-app-test # set this to your function app name on Azure
   PACKAGE_DIRECTORY: '.' # set this to the directory which contains pom.xml file
   JAVA_VERSION: '21' # set this to the java version to use
@@ -58,11 +58,15 @@ jobs:
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_0BBAD442020148D08924C4FC2A3A605F }}
 
 
+
       - name: Apply appSettings.json
         uses: azure/CLI@v2
         with:
           inlineScript: |
-            az functionapp config appsettings set --name $tgfn --resource-group $rsg --settings "@$ENVIRONMENT/appSettings.json" --output table
+            az functionapp config appsettings set \
+              --name "${{ env.AZURE_FUNCTIONAPP_NAME }}" \
+              --resource-group "<YOUR_RESOURCE_GROUP>" \
+              --settings @"${{ env.ENVIRONMENT }}/appSettings.json"
       
 
       - name: 'Run Azure Functions Action'
