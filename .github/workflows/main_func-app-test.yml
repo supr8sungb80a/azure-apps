@@ -8,8 +8,20 @@ on:
     branches:
       - main
   workflow_dispatch:
+    inputs:
+      ENVIRONMENT:
+        description: 'Set environment variables for the workflow'
+        required: true
+        type: choice
+        options: ['optumnonprod', 'optumprod']
+      ACTION:
+        description: 'Set the action to perform'
+        required: true
+        type: choice
+        options: ['deploy', 'build']
 
 env:
+  ENVIRONMENT: ${{ inputs.ENVIRONMENT }}
   AZURE_FUNCTIONAPP_NAME: func-app-test # set this to your function app name on Azure
   PACKAGE_DIRECTORY: '.' # set this to the directory which contains pom.xml file
   JAVA_VERSION: '21' # set this to the java version to use
